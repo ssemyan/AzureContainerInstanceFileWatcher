@@ -1,0 +1,37 @@
+apiVersion: '2018-10-01'
+location: westus
+name: watcher
+properties:
+  containers:
+  - name: watcher
+    properties:
+      environmentVariables: []
+      image: <your image>
+      resources:
+        requests:
+          cpu: 1.0
+          memoryInGB: 1.5
+      volumeMounts:
+      - mountPath: /tmp/watch
+        name: filesharevolume
+      - mountPath: /tmp/processed
+        name: filesharevolume2
+  imageRegistryCredentials:
+  - server: <your server>
+    username: <your username>
+    password: <your password>
+  osType: Linux
+  restartPolicy: Always
+  volumes:
+  - name: filesharevolume
+    azureFile:
+      sharename: watch
+      storageAccountName: <your storage account>
+      storageAccountKey: <your account key> 
+  - name: filesharevolume2
+    azureFile:
+      sharename: processed
+      storageAccountName: <your storage account>
+      storageAccountKey: <your account key>
+tags: {}
+type: Microsoft.ContainerInstance/containerGroups
